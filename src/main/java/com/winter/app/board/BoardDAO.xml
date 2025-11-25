@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.winter.app.board.BoardDAO">
+    	<select id="list" resultType="com.winter.app.board.BoardDTO">
+			SELECT * FROM BOARD ORDER BY NUM DESC    	
+    	</select>
+    	<!-- 상세 정보 조회 -->
+		<select id="detail" resultType="com.winter.app.board.BoardDTO" parameterType="com.winter.app.board.BoardDTO">
+			SELECT * FROM BOARD WHERE NUM=#{num}
+		</select>
+		<!-- 글 추가 -->
+		<insert id="create" parameterType="com.winter.app.board.BoardDTO">
+			INSERT INTO BOARD (title, writer, contents, date, hit) VALUES
+			(#{title}, #{writer}, #{contents}, now(), 0)
+		</insert>
+		<delete id="delete" parameterType="com.winter.app.board.BoardDTO">
+			DELETE FROM BOARD WHERE NUM=#{num}
+		</delete>
+		<update id="update" parameterType="com.winter.app.board.BoardDTO">
+			UPDATE BOARD SET title=#{title}, contents=#{contents} WHERE NUM=#{num}
+		</update>
+    </mapper>

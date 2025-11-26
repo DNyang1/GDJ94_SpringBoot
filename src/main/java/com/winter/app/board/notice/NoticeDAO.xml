@@ -6,8 +6,9 @@
     	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
     		SELECT * FROM notice WHERE board_num=#{boardNum}
     	</select>
-    	<select id="list" resultType="NoticeDTO">
+    	<select id="list" resultType="NoticeDTO" parameterType="Pager">
     		SELECT * FROM notice ORDER BY board_num DESC
+    		LIMIT #{startNum}, #{perPage}
     	</select>
     	<insert id="insert" parameterType="NoticeDTO">
     		INSERT INTO notice VALUES (null, #{boardTitle}, #{boardWriter}, #{boardContents}, now(), 0) 
@@ -18,4 +19,7 @@
     	<delete id="delete">
     		DELETE FROM notice WHERE board_num=#{boardNum}
     	</delete>
+    	<select id="countList">
+    		SELECT count(*) FROM notice;
+    	</select>
     </mapper>

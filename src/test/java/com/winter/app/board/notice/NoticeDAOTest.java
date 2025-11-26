@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.winter.app.util.Pager;
+
 @SpringBootTest
 class NoticeDAOTest {
 
@@ -21,19 +23,21 @@ class NoticeDAOTest {
 	}
 	
 	void testList() throws Exception {
-		List<NoticeDTO> ar = dao.list();
+		List<NoticeDTO> ar = dao.list(null);
 		System.out.println(ar);
 	}
 	
+	@Test
 	void testInsert() throws Exception {
-		NoticeDTO dto = new NoticeDTO();
-		dto.setBoardTitle("김현진의");
-		dto.setBoardWriter("고급");
-		dto.setBoardContents("권능의반지");
-		System.out.println(dao.insert(dto));
+		for (int i = 0; i < 120; i++) {
+			NoticeDTO dto = new NoticeDTO();
+			dto.setBoardTitle("햄"+i);
+			dto.setBoardWriter("버"+i);
+			dto.setBoardContents("거"+i);
+			System.out.println(dao.insert(dto));
+		}
 	}
 	
-	@Test
 	void testUpdate() throws Exception {
 		NoticeDTO dto = new NoticeDTO();
 		dto.setBoardNum(8L);

@@ -5,30 +5,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.winter.app.util.Pager;
+
 @Service
 public class NoticeService {
 
 	@Autowired
-	private NoticeDAO dao;
-	
-	public List<NoticeDTO> list() throws Exception{
-		return dao.list();
+	private NoticeDAO noticeDAO;
+
+	public List<NoticeDTO> list(Pager pager) throws Exception {
+		Long totalCount = noticeDAO.countList();
+		pager.pageing(totalCount);
+		return noticeDAO.list(pager);
 	}
-	
-	public NoticeDTO detail(NoticeDTO dto) throws Exception {
-		return dao.detail(dto);
+
+	public NoticeDTO detail(NoticeDTO noticeDTO) throws Exception {
+		return noticeDAO.detail(noticeDTO);
 	}
-	
-	public int insert(NoticeDTO dto) throws Exception {
-		return dao.insert(dto);
+
+	public int insert(NoticeDTO noticeDTO) throws Exception {
+		return noticeDAO.insert(noticeDTO);
 	}
-	
-	public int update(NoticeDTO dto) throws Exception {
-		return dao.update(dto);
+
+	public int update(NoticeDTO noticeDTO) throws Exception {
+		return noticeDAO.update(noticeDTO);
 	}
-	
-	public int delete(NoticeDTO dto) throws Exception {
-		return dao.delete(dto);
+
+	public int delete(NoticeDTO noticeDTO) throws Exception {
+		return noticeDAO.delete(noticeDTO);
 	}
-	
+
 }

@@ -17,4 +17,6 @@ public class NoticeDTO {
 	private String boardContents;
 	private LocalDate boardDate;
 	private Long boardHit;
+
+	
 }

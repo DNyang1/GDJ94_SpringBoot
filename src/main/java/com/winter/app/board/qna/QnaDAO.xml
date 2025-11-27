@@ -2,11 +2,32 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    <mapper namespace="com.winter.app.board.qna.QnaDAO">
-    	<select id="list" resultType="QnaDTO">
-    		SELECT * FROM qna ORDER BY board_num DESC
-    	</select>
-    	<insert id="add" parameterType="QnaDTO">
-    		INSERT INTO qna VALUES(null, #{boardTitle}, #{boardWriter}, #{boardContents}, now(), 0, 0, 0, 0)
-    	</insert>
-    </mapper>
+<mapper namespace="com.winter.app.board.qna.QnaDAO">
+	<select id="list" resultType="QnaDTO" parameterType="Pager">
+		SELECT * FROM qna
+		<if test="kind == 'k1'">
+			WHERE
+			board_title LIKE concat('%',#{search},'%')
+		</if>
+		<if test="kind == 'k2'">
+			WHERE
+			board_contents LIKE concat('%',#{search},'%')
+		</if>
+		<if test="kind == 'k3'">
+			WHERE
+			board_writer LIKE concat('%',#{search},'%')
+		</if>
+		ORDER BY board_num DESC
+		LIMIT #{startNum}, #{perPage}
+	</select>
+
+	<insert id="add" parameterType="QnaDTO">
+		INSERT INTO qna VALUES(null, #{boardTitle}, #{boardWriter},
+		#{boardContents}, now(), 0, 0, 0, 0)
+	</insert>
+	
+	<select id="countList">
+		SELECT count(*) FROM qna;
+	</select>
+
+</mapper>

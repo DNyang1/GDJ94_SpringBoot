@@ -23,8 +23,8 @@ public class NoticeService {
 		return noticeDAO.detail(noticeDTO);
 	}
 
-	public int insert(NoticeDTO noticeDTO) throws Exception {
-		return noticeDAO.insert(noticeDTO);
+	public int add(NoticeDTO noticeDTO) throws Exception {
+		return noticeDAO.add(noticeDTO);
 	}
 
 	public int update(NoticeDTO noticeDTO) throws Exception {

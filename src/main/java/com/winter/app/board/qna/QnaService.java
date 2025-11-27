@@ -5,17 +5,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.winter.app.util.Pager;
+
+
 @Service
 public class QnaService {
 	
 	@Autowired
 	private QnaDAO dao;
 	
-	public List<QnaDTO> list() throws Exception{
-		return dao.list();
+	public List<QnaDTO> list(Pager pager) throws Exception {
+		Long totalCount = dao.countList();
+		pager.pageing(totalCount);
+		return dao.list(pager);
 	}
 	
-	public int add(QnaDTO dto) throws Exception{
+	public QnaDTO detail(QnaDTO dto) throws Exception {
+		return dao.detail(dto);
+	}
+
+	public int add(QnaDTO dto) throws Exception {
 		return dao.add(dto);
+	}
+
+	public int update(QnaDTO dto) throws Exception {
+		return dao.update(dto);
+	}
+
+	public int delete(QnaDTO dto) throws Exception {
+		return dao.delete(dto);
 	}
 }

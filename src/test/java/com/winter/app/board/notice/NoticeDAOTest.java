@@ -28,13 +28,13 @@ class NoticeDAOTest {
 	}
 	
 	@Test
-	void testInsert() throws Exception {
+	void testAdd() throws Exception {
 		for (int i = 0; i < 120; i++) {
 			NoticeDTO dto = new NoticeDTO();
 			dto.setBoardTitle("햄"+i);
 			dto.setBoardWriter("버"+i);
 			dto.setBoardContents("거"+i);
-			System.out.println(dao.insert(dto));
+			System.out.println(dao.add(dto));
 		}
 	}
 	

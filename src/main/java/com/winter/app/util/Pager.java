@@ -6,7 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pager {
-
+	
+	private String kind;
+	private String search;
 	private Long page;
 	private Long perPage;
 	private Long perBlock;

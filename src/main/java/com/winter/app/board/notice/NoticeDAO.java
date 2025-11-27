@@ -11,7 +11,7 @@ public interface NoticeDAO {
 
 	public NoticeDTO detail(NoticeDTO noticeDTO) throws Exception;
 	public List<NoticeDTO> list(Pager pager) throws Exception;
-	public int insert(NoticeDTO noticeDTO) throws Exception;
+	public int add(NoticeDTO noticeDTO) throws Exception;
 	public int update(NoticeDTO noticeDTO) throws Exception;
 	public int delete(NoticeDTO noticeDTO) throws Exception;
 	public Long countList() throws Exception;

@@ -14,6 +14,6 @@ public interface QnaDAO {
 	public int update(QnaDTO qnaDTO) throws Exception;
 	public int delete(QnaDTO qnaDTO) throws Exception;
 	public Long countList() throws Exception;
-	
+	public int refUpdate(QnaDTO qnaDTO) throws Exception;
 		
 }

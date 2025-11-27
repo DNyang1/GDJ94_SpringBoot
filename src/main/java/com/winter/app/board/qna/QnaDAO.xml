@@ -4,30 +4,29 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winter.app.board.qna.QnaDAO">
 	<select id="list" resultType="QnaDTO" parameterType="Pager">
-		SELECT * FROM qna
-		<if test="kind == 'k1'">
-			WHERE
-			board_title LIKE concat('%',#{search},'%')
-		</if>
-		<if test="kind == 'k2'">
-			WHERE
-			board_contents LIKE concat('%',#{search},'%')
-		</if>
-		<if test="kind == 'k3'">
-			WHERE
-			board_writer LIKE concat('%',#{search},'%')
-		</if>
+		SELECT *
+		FROM qna
 		ORDER BY board_num DESC
-		LIMIT #{startNum}, #{perPage}
 	</select>
 
-	<insert id="add" parameterType="QnaDTO">
-		INSERT INTO qna VALUES(null, #{boardTitle}, #{boardWriter},
+	<insert id="add" parameterType="QnaDTO" useGeneratedKeys="true"
+		keyProperty="boardNum">
+		INSERT INTO qna VALUES(null, #{boardTitle},
+		#{boardWriter},
 		#{boardContents}, now(), 0, 0, 0, 0)
 	</insert>
-	
+	<update id="refUpdate" parameterType="QnaDTO">
+		UPDATE qna SET
+		board_ref=#{boardNum} WHERE board_num=#{boardNum}
+	</update>
+
 	<select id="countList">
 		SELECT count(*) FROM qna;
+	</select>
+
+	<select id="detail" resultType="QnaDTO" parameterType="QnaDTO">
+		SELECT *
+		FROM qna WHERE board_num=#{boardNum}
 	</select>
 
 </mapper>

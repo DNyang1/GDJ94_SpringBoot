@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.winter.app.board.BoardService;
+import com.winter.app.home.HomeController;
 import com.winter.app.util.Pager;
 
 
@@ -41,6 +42,15 @@ public class QnaService implements BoardService<QnaDTO> {
     @Override
     public int delete(QnaDTO dto) throws Exception {
         return dao.delete(dto);
+    }
+    
+    public int reply(QnaDTO dto) throws Exception {
+    	QnaDTO parent = dao.detail(dto);
+    	dao.stepUpdate(parent);
+    	dto.setBoardRef(parent.getBoardRef());
+    	dto.setBoardStep(parent.getBoardStep() + 1);
+    	dto.setBoardDepth(parent.getBoardDepth() + 1);
+    	return dao.reply(dto);
     }
 }
 

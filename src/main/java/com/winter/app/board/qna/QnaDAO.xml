@@ -6,7 +6,7 @@
 	<select id="list" resultType="QnaDTO" parameterType="Pager">
 		SELECT *
 		FROM qna
-		ORDER BY board_num DESC
+		ORDER BY board_ref DESC, board_step ASC;
 	</select>
 
 	<insert id="add" parameterType="QnaDTO" useGeneratedKeys="true"
@@ -28,5 +28,17 @@
 		SELECT *
 		FROM qna WHERE board_num=#{boardNum}
 	</select>
+
+	<update id="stepUpdate" parameterType="QnaDTO">
+		UPDATE qna SET board_step
+		= board_step + 1
+		WHERE board_ref = #{boardRef} AND board_step >
+		#{boardStep}
+	</update>
+	<insert id="reply" parameterType="QnaDTO">
+		INSERT INTO qna VALUES (null,
+		#{boardTitle}, #{boardWriter}, #{boardContents}, now(), 0,
+		#{boardRef}, #{boardStep}, #{boardDepth})
+	</insert>
 
 </mapper>

@@ -1,96 +1,80 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Custom fonts for this template-->
-<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
-<!-- Custom styles for this template-->
-<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<title>공지 상세</title>
+<c:import url="/WEB-INF/views/template/head.jsp"></c:import>
 </head>
 <body id="page-top">
-	<div id="wrapper">
-		<!-- side bar -->
-		<c:import url="/WEB-INF/views/template/sidebar.jsp"></c:import>
-		<!-- side bar -->
+   <div id="wrapper">
+      <c:import url="/WEB-INF/views/template/sidebar.jsp"></c:import>
+      <div id="content-wrapper" class="d-flex flex-column">
+         <div id="content">
+            <c:import url="/WEB-INF/views/template/topbar.jsp"></c:import>
 
-		<!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column">
-			<!-- Main Content -->
-			<div id="content" class="flex-grow-1">
+            <div class="container-fluid">
+               <h1 class="h3 mb-4 text-gray-800">공지사항 상세</h1>
 
-				<!-- topbar -->
-				<c:import url="/WEB-INF/views/template/topbar.jsp"></c:import>
-				<!-- topbar -->
+               <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                     <h6 class="m-0 font-weight-bold text-primary">
+                        ${dto.boardTitle}</h6>
+                  </div>
+                  <div class="card-body">
+                     <p>
+                        <strong>작성자:</strong> ${dto.boardWriter}
+                     </p>
+                     <p>
+                        <strong>작성일:</strong> ${dto.boardDate}
+                     </p>
+                     <p>
+                        <strong>조회수:</strong> ${dto.boardHit}
+                     </p>
+                     <hr>
+                     <p>${dto.boardContents}</p>
+                  </div>
+               </div>
 
-				<!-- Begin Page Content -->
-				<div class="container-fluid">
-					<!-- Page Heading -->
-					<div
-						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">디테일</h1>
-						<a href="#"
-							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-							class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-					</div>
+               <div class="d-flex justify-content-end">
+                  <a href="../qna/reply?boardNum=${dto.boardNum}" class="btn btn-outline-success mr-2">답글</a>
+                  <a href="./update?boardNum=${dto.boardNum}"
+                     class="btn btn-primary mr-2">수정하기</a>
+                  <button type="button" class="btn btn-danger" data-toggle="modal"
+                     data-target="#deleteModal">삭제하기</button>
+                  <a href="javascript:history.back()" class="btn btn-secondary ml-2">목록으로</a>
+               </div>
 
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+      aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="deleteModalLabel">정말 삭제하시겠습니까?</h5>
+               <button class="close" type="button" data-dismiss="modal"
+                  aria-label="Close">
+                  <span aria-hidden="true">×</span>
+               </button>
+            </div>
+            <div class="modal-body">${dto.boardNum}번 게시물을 삭제합니다.</div>
+            <div class="modal-footer">
+               <button class="btn btn-secondary" type="button"
+                  data-dismiss="modal">취소</button>
 
-					<div class="card w-75">
-						<div class="card-body">
-
-							<div class="mb-3">
-								<label class="form-label fw-bold">제목</label>
-								<p class="form-control-plaintext">${detail.boardTitle}</p>
-							</div>
-
-							<div class="mb-3">
-								<label class="form-label fw-bold">작성자</label>
-								<p class="form-control-plaintext">${detail.boardWriter}</p>
-							</div>
-
-							<div class="mb-3">
-								<label class="form-label fw-bold">작성일</label>
-								<p class="form-control-plaintext">${detail.boardDate}</p>
-							</div>
-
-							<div class="mb-3">
-								<label class="form-label fw-bold">조회수</label>
-								<p class="form-control-plaintext">${detail.boardHit}</p>
-							</div>
-
-							<div class="mb-3">
-								<label class="form-label fw-bold">내용</label>
-								<div class="p-3 border rounded" style="min-height: 150px;">
-									${detail.boardContents}</div>
-							</div>
-
-						</div>
-					</div>
-					<a href="./list" class="btn btn-secondary">목록</a>
-				</div>
-				<!-- End of Content Row -->
-			</div>
-			<!-- /.container-fluid -->
-		</div>
-		<!-- End of Main Content -->
-		<!-- Footer -->
-		<footer class="sticky-footer bg-white">
-			<div class="container my-auto">
-				<div class="copyright text-center my-auto">
-					<span>Copyright &copy; Your Website 2021</span>
-				</div>
-			</div>
-		</footer>
-		<!-- End of Footer -->
-	</div>
-	</div>
-	<c:import url="/WEB-INF/views/template/foot.jsp"></c:import>
+               <form action="./delete" method="post">
+                  <input type="hidden" name="boardNum" value="${dto.boardNum}">
+                  <button type="submit" class="btn btn-danger">삭제하기</button>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <c:import url="/WEB-INF/views/template/foot.jsp"></c:import>
 </body>
 </html>

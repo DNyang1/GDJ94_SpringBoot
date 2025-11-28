@@ -48,7 +48,7 @@
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">공지사항</h1>
+						<h1 class="h3 mb-0 text-gray-800">${category}</h1>
 						<a href="#"
 							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 							class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
@@ -70,7 +70,13 @@
 								<c:forEach items="${list}" var="dto">
 									<tr>
 										<th scope="row">${dto.boardNum}</th>
-										<td><a href="./detail?boardNum=${dto.boardNum}">${dto.boardTitle}</a></td>
+										<td>
+										<c:catch>
+											<c:forEach begin="" end="${dto.boardDepth}">--</c:forEach>
+											<a href="./detail?boardNum=${dto.boardNum}">
+											${dto.boardTitle}</a>
+										</c:catch>
+										</td>
 										<td>${dto.boardWriter}</td>
 										<td>${dto.boardDate}</td>
 										<td>${dto.boardHit}</td>

@@ -40,5 +40,16 @@
 		#{boardTitle}, #{boardWriter}, #{boardContents}, now(), 0,
 		#{boardRef}, #{boardStep}, #{boardDepth})
 	</insert>
+	
+	<update id="update" parameterType="QnaDTO">
+		UPDATE qna SET
+		board_title = #{boardTitle},
+		board_writer = #{boardWriter},
+		board_contents = #{boardContents}
+		WHERE board_num = #{boardNum}
+	</update>
 
+	<delete id="delete" parameterType="QnaDTO">
+		DELETE FROM qna WHERE board_num = #{boardNum}
+	</delete>
 </mapper>

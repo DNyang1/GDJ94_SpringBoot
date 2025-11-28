@@ -18,7 +18,7 @@ import com.winter.app.util.Pager;
 public class NoticeController {
 
 	@Autowired
-	private NoticeService noticeService;
+	private NoticeService service;
 	
 	@Value("${category.board.notice}")
 	private String category;
@@ -30,7 +30,7 @@ public class NoticeController {
 	
 	@GetMapping("list")
 	public String list(Pager pager, Model model) throws Exception {
-	    List<NoticeDTO> ar = noticeService.list(pager);
+	    List<NoticeDTO> ar = service.list(pager);
 	    model.addAttribute("list", ar);
 	    model.addAttribute("pager", pager);
 	    return "board/list";
@@ -44,13 +44,33 @@ public class NoticeController {
 
 	@PostMapping("add")
 	public String add(NoticeDTO dto) throws Exception {
-		noticeService.add(dto);
+		service.add(dto);
 	    return "redirect:/notice/list";
 	}
 	
 	@GetMapping("detail")
 	public String detail(NoticeDTO dto, Model model) throws Exception {
-	    model.addAttribute("detail", noticeService.detail(dto));
+	    model.addAttribute("detail", service.detail(dto));
 	    return "board/detail";
 	}
+
+	@GetMapping("update")
+	public String update(NoticeDTO dto, Model model) throws Exception {
+		dto = service.detail(dto);
+		model.addAttribute("dto",dto);
+		model.addAttribute("sub","Update");
+		return "board/add";
+	}
+	@PostMapping("update")
+	public String update(NoticeDTO dto) throws Exception {
+	    service.update(dto);
+	    return "redirect:/notice/detail?boardNum=" + dto.getBoardNum();
+	}
+
+	@PostMapping("delete")
+	public String delete(NoticeDTO dto) throws Exception {
+	    service.delete(dto);
+	    return "redirect:/notice/list";
+	}
+	
 }

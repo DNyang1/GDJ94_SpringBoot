@@ -46,4 +46,15 @@
 		SELECT count(*) FROM notice;
 	</select>
 
+	<update id="update" parameterType="NoticeDTO">
+		UPDATE notice SET
+		board_title = #{boardTitle},
+		board_writer = #{boardWriter},
+		board_contents = #{boardContents}
+		WHERE board_num = #{boardNum}
+	</update>
+
+	<delete id="delete" parameterType="NoticeDTO">
+		DELETE FROM notice WHERE board_num = #{boardNum}
+	</delete>
 </mapper>

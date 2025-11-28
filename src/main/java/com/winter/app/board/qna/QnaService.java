@@ -52,5 +52,6 @@ public class QnaService implements BoardService<QnaDTO> {
     	dto.setBoardDepth(parent.getBoardDepth() + 1);
     	return dao.reply(dto);
     }
+    
 }
 

@@ -8,9 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.winter.app.board.qna.QnaDTO;
 import com.winter.app.util.Pager;
 
 @Controller
@@ -21,15 +19,18 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	@GetMapping("list")
-	public void list(Pager pager, Model model) throws Exception {
-		List<NoticeDTO> ar = noticeService.list(pager);
+	public String list(Pager pager, Model model) throws Exception {
+	    List<NoticeDTO> ar = noticeService.list(pager);
 	    model.addAttribute("list", ar);
 	    model.addAttribute("pager", pager);
+	    return "board/list";
 	}
+
 	@GetMapping("add")
 	public String add() throws Exception {
-	    return "notice/add";
+	    return "board/add";
 	}
+
 
 	@PostMapping("add")
 	public String add(NoticeDTO dto) throws Exception {
@@ -38,7 +39,8 @@ public class NoticeController {
 	}
 	
 	@GetMapping("detail")
-	public void detail(NoticeDTO dto, Model model) throws Exception {
-		model.addAttribute("detail",noticeService.detail(dto));		
+	public String detail(NoticeDTO dto, Model model) throws Exception {
+	    model.addAttribute("detail", noticeService.detail(dto));
+	    return "board/detail";
 	}
 }

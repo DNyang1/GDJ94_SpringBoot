@@ -1,6 +1,9 @@
 package com.winter.app.board;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.winter.app.util.Pager;
 
 public interface BoardDAO<T extends BoardDTO> {
@@ -10,5 +13,6 @@ public interface BoardDAO<T extends BoardDTO> {
     public int add(T dto) throws Exception;
     public int update(T dto) throws Exception;
     public int delete(T dto) throws Exception;
-    public Long countList() throws Exception;
+    public Long count() throws Exception;
+    public int fileAdd(BoardFileDTO boardFileDTO) throws Exception;
 }

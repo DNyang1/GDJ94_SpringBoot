@@ -14,7 +14,7 @@ public class ProductService {
 	private ProductDAO dao;
 	
     public List<ProductDTO> list(Pager pager) throws Exception {
-        Long totalCount = dao.countList();
+        Long totalCount = dao.count();
         pager.pageing(totalCount);
         return dao.list(pager);
     }

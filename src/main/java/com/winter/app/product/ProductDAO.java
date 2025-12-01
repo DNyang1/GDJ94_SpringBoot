@@ -13,5 +13,5 @@ public interface ProductDAO {
     public int add(ProductDTO dto) throws Exception;
     public int update(ProductDTO dto) throws Exception;
     public int delete(ProductDTO dto) throws Exception;
-    public Long countList() throws Exception;
+    public Long count() throws Exception;
 }

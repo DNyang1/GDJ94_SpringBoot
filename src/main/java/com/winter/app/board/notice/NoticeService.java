@@ -2,16 +2,17 @@ package com.winter.app.board.notice;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardFileDTO;
 import com.winter.app.board.BoardService;
+import com.winter.app.board.qna.QnaController;
+import com.winter.app.config.FileMappingConfig;
+import com.winter.app.files.FileManager;
 import com.winter.app.util.Pager;
 
 @Service
@@ -23,6 +24,9 @@ public class NoticeService implements BoardService<NoticeDTO> {
     @Value("${app.upload.notice}")
     private String uploadPath;
 
+	@Autowired
+	private FileManager fileManager;
+
     @Override
     public List<NoticeDTO> list(Pager pager) throws Exception {
         Long totalCount = dao.count();
@@ -32,29 +36,30 @@ public class NoticeService implements BoardService<NoticeDTO> {
 
     @Override
     public NoticeDTO detail(NoticeDTO dto) throws Exception {
+    	
         return dao.detail(dto);
     }
     
     @Override
     public int add(NoticeDTO dto, MultipartFile[] attach) throws Exception {
-    	int result = dao.add(dto);
-    	for (MultipartFile f : attach) {
-			File file = new File(uploadPath);
-			if(!file.exists()) file.mkdirs();
+		int result = dao.add(dto);
+		File file = new File(uploadPath);
+		if (attach != null && attach.length > 0) {
+			for (MultipartFile f : attach) {
+				if (f == null || f.isEmpty()) {
+					continue;
+				}
+				String fileName = fileManager.fileSave(file, f);
+				BoardFileDTO fileDTO = new BoardFileDTO();
+				fileDTO.setFileName(fileName);
+				fileDTO.setFileOrigin(f.getOriginalFilename());
+				fileDTO.setBoardNum(dto.getBoardNum());
 
-			String fileName = UUID.randomUUID().toString();
-			fileName = fileName + "_" + f.getOriginalFilename();
-			file = new File(file, fileName);
-			
-			FileCopyUtils.copy(f.getBytes(), file);
-			BoardFileDTO fileDTO = new NoticeFileDTO();
-			fileDTO.setFileName(fileName);
-			fileDTO.setFileOrigin(f.getOriginalFilename());
-			fileDTO.setBoardNum(dto.getBoardNum());
-			dao.fileAdd(fileDTO);
+				dao.fileAdd(fileDTO);
+			}
 		}
-    	return result;
-    }
+		return result;
+	}
 
     @Override
     public int update(NoticeDTO dto) throws Exception {
@@ -63,6 +68,12 @@ public class NoticeService implements BoardService<NoticeDTO> {
 
     @Override
     public int delete(NoticeDTO dto) throws Exception {
+    	dto = dao.detail(dto);
+    	for(BoardFileDTO fileDTO:dto.getFileDTOs()) {
+    		File file = new File(uploadPath, fileDTO.getFileName());
+    		fileManager.fileDelete(file);
+    	}
+    	dao.fileDelete(dto);
         return dao.delete(dto);
     }
 }

@@ -18,11 +18,28 @@
     		</if>
     	</sql>
     	
-    	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
-    		SELECT * FROM notice 
+    	<select id="detail" resultMap="detailResult" parameterType="NoticeDTO">
+    		SELECT * 
+    		FROM notice n
+    			LEFT JOIN
+  					notice_files nf
+  					USING(board_num)
     		WHERE 
     		board_num=#{boardNum}
     	</select>
+    	<resultMap type="NoticeDTO" id="detailResult">
+    		<id column="board_num" property="boardNum"/>
+    		<result column="board_title" property="boardTitle"/>
+    		<result column="board_writer" property="boardWriter"/>
+    		<result column="board_contents" property="boardContents"/>
+    		<result column="board_date" property="boardDate"/>
+    		<result column="board_hit" property="boardHit"/>
+    		<collection property="fileDTOs" javaType="java.util.List" ofType="BoardFileDTO">
+    			<id column="file_num" property="fileNum"/>
+    			<result column="file_name" property="fileName"/>
+    			<result column="file_origin" property="fileOrigin"/>
+    		</collection>
+    	</resultMap>
     	
     	<select id="count" resultType="Long" parameterType="Pager">
     		SELECT COUNT(board_num) FROM notice
@@ -47,13 +64,16 @@
     	<delete id="delete" parameterType="NoticeDTO">
     		DELETE FROM notice WHERE board_num=#{boardNum} 
     	</delete>
+    	<delete id="fileDelete" parameterType="NoticeDTO">
+    		DELETE FROM notice_files WHERE board_num=#{boardNum} 
+    	</delete>
     	
     	<update id="update" parameterType="NoticeDTO">
     		UPDATE notice SET board_title=#{boardTitle}, board_contents=#{boardContents} 
     		WHERE board_num=#{boardNum}
     	</update>
     	
-    	<insert id="fileAdd" parameterType="NoticeFileDTO">
+    	<insert id="fileAdd" parameterType="BoardFileDTO">
     		INSERT INTO notice_files (file_name, file_origin, board_num) 
     		VALUES (#{fileName}, #{fileOrigin}, #{boardNum})
     	</insert>

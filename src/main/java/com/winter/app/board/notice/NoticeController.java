@@ -51,7 +51,7 @@ public class NoticeController {
 	
 	@GetMapping("detail")
 	public String detail(NoticeDTO dto, Model model) throws Exception {
-	    model.addAttribute("detail", service.detail(dto));
+	    model.addAttribute("dto", service.detail(dto));
 	    return "board/detail";
 	}
 

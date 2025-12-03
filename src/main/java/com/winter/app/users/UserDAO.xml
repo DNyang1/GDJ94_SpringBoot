@@ -5,15 +5,37 @@
 <mapper namespace="com.winter.app.users.UserDAO">
 	<insert id="register" parameterType="UserDTO">
 		INSERT INTO users
-		(username, password, name, email, phone, birth)
+		(username,
+		password, name, email, phone, birth)
 		VALUES
-		(#{username}, #{password}, #{name}, #{email}, #{phone}, #{birth})
+		(#{username}, #{password},
+		#{name}, #{email}, #{phone}, #{birth})
 	</insert>
 
 	<insert id="profileAdd" parameterType="ProfileDTO">
 		INSERT INTO profile
 		(file_name, file_origin, username)
 		VALUES
-		(#{fileName}, #{fileOrigin}, #{username})
+		(#{fileName}, #{fileOrigin},
+		#{username})
 	</insert>
+	<select id="detail" parameterType="UserDTO" resultType="UserDTO">
+		SELECT
+		username, password, name, email, phone, birth
+		FROM users
+		WHERE username
+		= #{username}
+	</select>
+	<select id="login" parameterType="UserDTO" resultType="UserDTO">
+		SELECT
+		username,
+		password,
+		name,
+		email,
+		phone,
+		birth
+		FROM users
+		WHERE username = #{username}
+		AND password = #{password}
+	</select>
 </mapper>

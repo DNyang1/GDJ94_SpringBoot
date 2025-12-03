@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.winter.app.util.Pager;
 
 @Controller
@@ -41,9 +43,9 @@ public class QnaController {
     }
 
     @PostMapping("add")
-    public String add(QnaDTO dto) throws Exception {
-        service.add(dto);
-        return "redirect:/qna/list";
+    public String add(QnaDTO dto, MultipartFile[] attach) throws Exception {
+    	service.add(dto, attach);
+    	return "redirect:/qna/list";
     }
 
     @GetMapping("detail")

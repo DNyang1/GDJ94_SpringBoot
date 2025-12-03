@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.winter.app.board.notice.NoticeService;
+import com.winter.app.files.FileDownView;
 import com.winter.app.files.FileManager;
 
 @Service
@@ -36,5 +37,13 @@ public class UserService {
 			dao.profileAdd(fileDTO);
 		}
 		return result;
+	}
+
+	public UserDTO login(UserDTO dto) throws Exception {
+		return dao.login(dto);
+	}
+
+	public UserDTO detail(UserDTO dto) throws Exception {
+		return dao.detail(dto);
 	}
 }

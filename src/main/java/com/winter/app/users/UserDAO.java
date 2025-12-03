@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserDAO {
 	public int register(UserDTO dto) throws Exception;
 	public int profileAdd(ProfileDTO dto) throws Exception;
+	public UserDTO detail(UserDTO dto) throws Exception; 
+	public UserDTO login(UserDTO dto) throws Exception; 
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +37,8 @@
 
 					<!-- Content Row -->
 					<div class="row">
-
+						<spring:message code="hi"></spring:message>
+						<spring:message code="message.welcome" arguments="${user.username},${user.birth}" argumentSeparator="," text="123123"></spring:message>
 						<!-- 생성한 contents 작성 -->
 						<c:if test="${not empty user}">
 							<h1>Login 성공</h1>

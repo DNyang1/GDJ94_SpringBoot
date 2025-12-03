@@ -8,9 +8,8 @@ import com.winter.app.filters.UserFilter;
 
 import jakarta.servlet.Filter;
 
-//@Configuration
+@Configuration
 public class UserFilterMapping implements WebMvcConfigurer{
-
 
 	@Bean
 	FilterRegistrationBean<Filter> filterRegistrationBean() {

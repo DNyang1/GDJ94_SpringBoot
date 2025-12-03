@@ -5,10 +5,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.winter.app.util.Pager;
 
 @SpringBootTest
+@Transactional
 class NoticeDAOTest {
 
 	@Autowired
@@ -28,6 +31,7 @@ class NoticeDAOTest {
 	}
 	
 	@Test
+	@Rollback(false)
 	void testAdd() throws Exception {
 		for (int i = 0; i < 120; i++) {
 			NoticeDTO dto = new NoticeDTO();

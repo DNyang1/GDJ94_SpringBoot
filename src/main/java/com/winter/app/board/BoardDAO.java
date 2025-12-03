@@ -12,6 +12,7 @@ public interface BoardDAO<T extends BoardDTO> {
     public int update(T dto) throws Exception;
     public int delete(T dto) throws Exception;
     public Long count() throws Exception;
-    public int fileAdd(BoardFileDTO boardFileDTO) throws Exception;
+    public int fileAdd(BoardFileDTO dto) throws Exception;
     public int fileDelete(BoardDTO dto);
+    public BoardFileDTO fileDetail(BoardFileDTO dto) throws Exception;
 }

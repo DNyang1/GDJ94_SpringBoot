@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.winter.app.board.BoardFileDTO;
 import com.winter.app.util.Pager;
 
 @Controller
@@ -72,6 +73,12 @@ public class NoticeController {
 	public String delete(NoticeDTO dto) throws Exception {
 	    service.delete(dto);
 	    return "redirect:/notice/list";
+	}
+	@GetMapping("fileDown")
+	public String fileDown(BoardFileDTO fileDTO, Model model) throws Exception {
+		fileDTO = service.fileDetail(fileDTO);
+		model.addAttribute("file", fileDTO);
+		return "fileDownView";
 	}
 	
 }

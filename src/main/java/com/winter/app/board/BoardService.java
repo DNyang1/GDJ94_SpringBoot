@@ -12,4 +12,5 @@ public interface BoardService<T extends BoardDTO> {
     public int add(T dto, MultipartFile[] attach) throws Exception;  
     public int update(T dto) throws Exception;
     public int delete(T dto) throws Exception;
+    public BoardFileDTO fileDetail(BoardFileDTO dto) throws Exception;
 }

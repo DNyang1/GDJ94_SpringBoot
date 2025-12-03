@@ -84,5 +84,9 @@ public class QnaService implements BoardService<QnaDTO> {
 		dto.setBoardDepth(parent.getBoardDepth() + 1);
 		return dao.reply(dto);
 	}
-
+	@Override
+	public BoardFileDTO fileDetail(BoardFileDTO dto) throws Exception{
+		return dao.fileDetail(dto);
+	}
+	
 }

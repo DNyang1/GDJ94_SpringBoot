@@ -76,4 +76,8 @@ public class NoticeService implements BoardService<NoticeDTO> {
     	dao.fileDelete(dto);
         return dao.delete(dto);
     }
+    @Override
+	public BoardFileDTO fileDetail(BoardFileDTO dto) throws Exception{
+		return dao.fileDetail(dto);
+	}
 }

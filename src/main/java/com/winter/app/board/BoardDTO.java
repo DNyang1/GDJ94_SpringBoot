@@ -3,6 +3,7 @@ package com.winter.app.board;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +14,10 @@ import lombok.ToString;
 public class BoardDTO {
 
     private Long boardNum;
+    
+    @NotBlank
     private String boardTitle;
+    
     private String boardWriter;
     private String boardContents;
     private LocalDate boardDate;

@@ -26,6 +26,21 @@
 		WHERE username
 		= #{username}
 	</select>
+	<update id="update" parameterType="UserDTO">
+    UPDATE users
+    SET
+        name = #{name},
+        email = #{email},
+        phone = #{phone},
+        birth = #{birth}
+    WHERE username = #{username}
+</update>
+<update id="updateProfile" parameterType="ProfileDTO">
+    UPDATE user_profile
+    SET fileName = #{fileName},
+        fileOrigin = #{fileOrigin}
+    WHERE username = #{username}
+</update>
 	<select id="login" parameterType="UserDTO" resultType="UserDTO">
 		SELECT
 		username,

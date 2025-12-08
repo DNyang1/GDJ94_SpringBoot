@@ -4,14 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @ToString
+
 public class ProductDTO {
-	private Long 	pNum;
-	private String 	pTitle;
-	private String 	pName;
-	private String 	pCate;
-	private double 	pRate;
-	private boolean pSale;
+	
+	
+	private Long productNum;
+	private String productName;
+	private String productContents;
+	private String productCategory;
+	private double productRate;
+	private boolean productSale;
+	
+	
+	
+	
 }

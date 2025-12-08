@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 
 	@GetMapping("/")
-	public String index() throws Exception {
-		log.info("인덱스컨트롤라 인덱스컨트롤라 인덱스컨트롤라 인덱스컨트롤라 인덱스컨트롤라 인덱스컨트롤라 ");
+	public String index()throws Exception{
+		log.info("index contorller");
 		return "index";
 	}
 }

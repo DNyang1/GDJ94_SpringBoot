@@ -1,31 +1,38 @@
 package com.winter.app.users;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-@Getter
 @Setter
+@Getter
 @ToString
 public class UserDTO {
-	@NotBlank
-	private String username;
-
+	
 	@NotBlank(groups = {RegisterGroup.class})
+	private String username;
+	//@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])[A-Za-z0-9#?!@$%^&*-]{8,12}$")
+	
+	@NotBlank(groups = {RegisterGroup.class, PasswordGroup.class})
 	private String password;
-
+	
+	
+	private String passwordCheck;
+	
 	@NotBlank(groups = {RegisterGroup.class, UpdateGroup.class})
 	private String name;
-
-	@NotBlank
-	@Email(message = "올바른 이메일 형식을 입력해주세요.")
+	@Email(groups = {RegisterGroup.class, UpdateGroup.class})
+	@NotBlank(groups = {RegisterGroup.class})
 	private String email;
-
-	@NotBlank
+	@Pattern(regexp = "^01(?:0|1|[6-9])-[0-9]{3,4}-[0-9]{4}$", groups = {RegisterGroup.class, UpdateGroup.class})
 	private String phone;
-	private String birth;
-	@NotBlank(message = "비밀번호 확인은 필수 입력값입니다.")
-	private String passwordCheck;
+	@Past(groups = {RegisterGroup.class, UpdateGroup.class})
+	private LocalDate birth;
+	private UserFileDTO userFileDTO;
+
 }

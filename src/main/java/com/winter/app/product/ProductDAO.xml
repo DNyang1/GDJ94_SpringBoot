@@ -2,77 +2,65 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.winter.app.product.ProductDAO">
-
-    <!-- 검색 공통 SQL -->
-    <sql id="search">
-        <if test="kind == 'k1'">
-            WHERE product_title LIKE CONCAT('%', #{search}, '%')
-        </if>
-
-        <if test="kind == 'k2'">
-            WHERE product_name LIKE CONCAT('%', #{search}, '%')
-        </if>
-
-        <if test="kind == 'k3'">
-            WHERE product_category LIKE CONCAT('%', #{search}, '%')
-        </if>
-    </sql>
-
-    <select id="detail" resultType="ProductDTO" parameterType="ProductDTO">
-        SELECT 
-            product_num      AS pNum,
-            product_title    AS pTitle,
-            product_name     AS pName,
-            product_category AS pCate,
-            product_rate     AS pRate,
-            product_sale     AS pSale
-        FROM product
-        WHERE product_num = #{pNum}
-    </select>
-
-    <select id="count" resultType="Long" parameterType="Pager">
-        SELECT COUNT(product_num)
-        FROM product
-        <include refid="search"/>
-    </select>
-
-    <select id="list" resultType="ProductDTO" parameterType="Pager">
-        SELECT
-            product_num      AS pNum,
-            product_title    AS pTitle,
-            product_name     AS pName,
-            product_category AS pCate,
-            product_rate     AS pRate,
-            product_sale     AS pSale
-        FROM product
-        <include refid="search"/>
-        ORDER BY product_num DESC
-        LIMIT #{startNum}, #{perPage}
-    </select>
-
-    <insert id="add" parameterType="ProductDTO" useGeneratedKeys="true" keyProperty="pNum">
-        INSERT INTO product
-        (product_title, product_name, product_category, product_rate, product_sale)
-        VALUES
-        (#{pTitle}, #{pName}, #{pCate}, #{pRate}, #{pSale})
-    </insert>
-
-    <update id="update" parameterType="ProductDTO">
-        UPDATE product
-        SET
-            product_title    = #{pTitle},
-            product_name     = #{pName},
-            product_category = #{pCate},
-            product_rate     = #{pRate},
-            product_sale     = #{pSale}
-        WHERE product_num = #{pNum}
-    </update>
-
-    <delete id="delete" parameterType="ProductDTO">
-        DELETE FROM product
-        WHERE product_num = #{pNum}
-    </delete>
-
-</mapper>
+    
+    <mapper namespace="com.winter.app.product.ProductDAO">
+    	
+    	<!-- 리스트 보기 -->
+    	<select id="list" parameterType="ProductDTO" resultType="ProductDTO">
+    		SELECT * FROM products
+    	</select>
+    	
+    	<!-- 조회 -->
+    	<select id="detail" parameterType="ProductDTO" resultType="ProductDTO">
+    		SELECT * FROM products WHERE product_num=#{productNum}
+    	</select>
+    	
+    	<!-- 추가 -->
+    	<insert id="add" parameterType="productDTO">
+    		INSERT INTO products 
+			(product_name, product_contents, product_category, product_rate, product_sale)
+			VALUES
+			(#{productName} , #{productContents} , #{productCategory} , #{productRate} , #{productSale})
+    	</insert>
+    	
+    	<!-- 삭제 -->
+    	<delete id="delete" parameterType="ProductDTO">
+    		DELETE FROM products
+    		WHERE product_num = #{productNum}
+    	</delete>
+    	
+    	
+    	<!-- 수정 -->
+    	<update id="update" parameterType="ProductDTO">
+    		UPDATE products SET 
+	    		product_name = #{productName},
+	    		product_category = #{productCategory},
+	    		product_rate = #{productRate},
+	    		product_contents = #{productContents},
+	    		product_sale = #{productSale}
+    		WHERE product_num = #{productNum}
+    		
+    	</update>
+    	
+    	<!--  댓글  -->
+    	
+    	<select id="commentList" resultType="ProductCommentDTO" parameterType="java.util.Map">
+    		SELECT * FROM comment
+    		WHERE product_num=#{product.productNum}
+    		ORDER BY board_num DESC
+    		Limit #{pager.startNum}, #{pager.perPage}
+    	</select>
+    	
+    	<select id="commentCount" parameterType="ProductCommentDTO" resultType="Long">
+    		SELECT COUNT(board_num) FROM comment
+    		WHERE product_num=#{productNum}
+    	</select>
+    	
+    	<insert id="commentAdd" parameterType="ProductCommentDTO">
+    		INSERT INTO comment 
+    		VALUES (null, #{boardContents}, now(), #{productNum}, #{username})
+    	</insert>
+    	
+    	
+    	
+    </mapper>

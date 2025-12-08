@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<c:import url="/WEB-INF/views/template/topbar.jsp"></c:import>
+<c:import url="/WEB-INF/views/template/head.jsp"></c:import>
 </head>
 <body id="page-top">
 	<div id="wrapper">
@@ -56,7 +56,7 @@
         </div>
 	
 	</div>
-	<c:import url="/WEB-INF/views/template/foot.jsp"></c:import>
-	 
+	
+<c:import url="/WEB-INF/views/template/foot.jsp"></c:import>	
 </body>
 </html>

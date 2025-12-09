@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardDTO;
 import com.winter.app.board.BoardFileDTO;
+import com.winter.app.users.UserDTO;
 import com.winter.app.util.Pager;
 
 import jakarta.validation.Valid;
@@ -64,21 +66,25 @@ public class NoticeController {
 	@GetMapping("add")
 	public String add(@ModelAttribute("dto") NoticeDTO noticeDTO)throws Exception{
 		return "board/add";
+		
 	}
 	
 	@PostMapping("add")
-	public String add(@ModelAttribute("dto") @Valid NoticeDTO noticeDTO,BindingResult bindingResult ,MultipartFile [] attach)throws Exception{
-		
-		if(bindingResult.hasErrors()) {
-			
+	public String add(
+		@AuthenticationPrincipal UserDTO userDTO, @ModelAttribute("dto") @Valid NoticeDTO noticeDTO,
+		BindingResult bindingResult, MultipartFile[] attach ) throws Exception {
+
+		if (bindingResult.hasErrors()) {
 			return "board/add";
 		}
-		
-		//int result = noticeService.add(noticeDTO, attach);
-		
+
+		noticeDTO.setBoardWriter(userDTO.getUsername());
+
+		int result = noticeService.add(noticeDTO, attach);
+
 		return "redirect:./list";
-		
 	}
+
 	
 	@GetMapping("update")
 	public String update(NoticeDTO noticeDTO, Model model)throws Exception{

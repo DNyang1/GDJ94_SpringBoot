@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,23 +10,23 @@
 <c:import url="/WEB-INF/views/template/head.jsp"></c:import>
 </head>
 <body id="page-top">
-	<div id="wrapper">
-		<!-- side bar -->
-		<c:import url="/WEB-INF/views/template/sidebar.jsp"></c:import>
-		<!-- side bar -->
-		
-		<!-- Content Wrapper -->
+    <div id="wrapper">
+        <!-- side bar -->
+        <c:import url="/WEB-INF/views/template/sidebar.jsp"></c:import>
+        <!-- side bar -->
+        
+        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-       			
-       			<!-- topbar -->
-       			<c:import url="/WEB-INF/views/template/topbar.jsp"></c:import>
-            	<!-- topbar -->
-            	
-            	<!-- Begin Page Content -->
+               
+                <!-- topbar -->
+                <c:import url="/WEB-INF/views/template/topbar.jsp"></c:import>
+                <!-- topbar -->
+                
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                	<!-- Page Heading -->
+                    <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">${category} Detail</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
@@ -34,8 +35,12 @@
                     
                     <!-- Content Row -->
                     <div class="row justify-content-center mt-5">
-                    <div class="col-lg-6 mt-5">
 
+                    <!-- 🔐 로그인된 사용자 전용 -->
+                    <sec:authorize access="isAuthenticated()">
+                        <sec:authentication property="principal" var="user" />
+
+                        <div class="col-lg-6 mt-5">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Board Contents</h6>
@@ -48,14 +53,21 @@
                                 </div>
                                 
                                 <div class="card-footer">
-                                	
-                                	<a href="./update" class="btn btn-primary">Update</a>
-									<a href="./change" class="btn btn-danger">비번변경</a>
+                                    <a href="./update" class="btn btn-primary">Update</a>
+                                    <a href="./change" class="btn btn-danger">비번변경</a>
                                 </div>
                              </div>
-                             
-                     </div>           
-                                        
+                        </div>
+                    </sec:authorize>
+
+                    <!-- 🚫 비로그인 사용자 전용 -->
+                    <sec:authorize access="!isAuthenticated()">
+                        <div class="col-lg-6 mt-5 text-center">
+                            <h2>로그인이 필요한 페이지입니다.</h2>
+                            <a href="/users/login" class="btn btn-primary mt-3">로그인하기</a>
+                        </div>
+                    </sec:authorize>
+
                     </div>
                 
                 </div>
@@ -73,9 +85,9 @@
             </footer>
             <!-- End of Footer -->
         </div>
-	
-	</div>
-	
-<c:import url="/WEB-INF/views/template/foot.jsp"></c:import>	
+    
+    </div>
+    
+<c:import url="/WEB-INF/views/template/foot.jsp"></c:import>    
 </body>
 </html>

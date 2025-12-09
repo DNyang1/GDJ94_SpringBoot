@@ -20,10 +20,11 @@ public class UserService {
 	@Autowired
 	private FileManager fileManager;
 	
-	private PasswordEncoder passwordEncoder;
-	
 	@Value("${app.upload.user}")
 	private String uploadPath;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	public boolean getError(UserDTO userDTO, BindingResult bindingResult)throws Exception{
 		//check : true  -> 검증 실패, error 존재
@@ -56,6 +57,8 @@ public class UserService {
 		userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		
 		result = userDAO.register(userDTO);
+		
+		result = userDAO.roleAdd(userDTO);
 		
 		if(profile == null || profile.isEmpty()) {
 			return result;

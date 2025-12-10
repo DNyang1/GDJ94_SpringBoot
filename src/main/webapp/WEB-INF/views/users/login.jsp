@@ -51,11 +51,11 @@
                                    	  
 									  <div class="form-group">
 									    <label for="writer">Username</label>
-									    <input type="text" class="form-control" value="test"  id="username" name="username">
+									    <input type="text" class="form-control" value="qw"  id="username" name="username">
 									  </div>
 									  <div class="form-group">
 									    <label for="password">Password</label>
-									    <input type="password" class="form-control" value="anananan"  id="password" name="password">
+									    <input type="password" class="form-control" value="qw"  id="password" name="password">
 									  </div>
 									  
 									    <div class="form-group form-check">

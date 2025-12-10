@@ -1,0 +1,97 @@
+package com.winter.app.users;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+public class UserDetailServiceImpl extends DefaultOAuth2UserService implements UserDetailsService{
+
+	
+	@Autowired
+	private UserDAO userDAO;
+
+	@Override
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+		
+		OAuth2User user = super.loadUser(userRequest);
+		log.info("{}",user);
+		
+		String sns = userRequest.getClientRegistration().getClientName();
+		log.info("{}",sns);
+		UserDTO user1 = null;
+		
+		if(sns.toUpperCase().equals("KAKAO")) {
+			user1 = this.useKakao(userRequest);
+			user1.setSns(sns);
+		}
+		return user1;
+		
+	}
+
+	private UserDTO useKakao(OAuth2UserRequest userRequest) {
+		OAuth2User user = super.loadUser(userRequest);
+		log.info("getName: {}",user.getName());
+		log.info("getAttributes: {}",user.getAttributes());
+		log.info("getAuthorities: {}",user.getAuthorities());
+		Map<String, Object> attr = user.getAttribute("properties");
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(user.getName());
+		
+		try {
+			userDTO = userDAO.detail(userDTO);
+			if (userDTO == null) {
+				userDTO = new UserDTO();
+				userDTO.setUsername(user.getName());
+				userDTO.setPassword("kakao");
+				userDTO.setName(attr.get("nickname").toString());
+				userDAO.register(userDTO);
+				UserFileDTO userFileDTO = new UserFileDTO();
+				userFileDTO.setFileName(attr.get("profile_image").toString());
+				userFileDTO.setUsername(user.getName());
+				userDAO.userFileAdd(userFileDTO);
+				userDTO.setUserFileDTO(userFileDTO);
+				userDAO.roleAdd(userDTO);
+				userDTO = userDAO.detail(userDTO);
+			}
+			userDTO.setAttributes(attr);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return userDTO;
+		
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		System.out.println("로그인 요청");
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(username);
+		UserDetails userDetails;
+		try {
+			userDetails = userDAO.detail(userDTO);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new UsernameNotFoundException(username);
+		}
+		return userDetails;
+	}
+
+}

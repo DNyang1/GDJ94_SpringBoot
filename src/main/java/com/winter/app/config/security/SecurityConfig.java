@@ -6,12 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.winter.app.users.UserDetailSerivceImpl;
+import com.winter.app.users.UserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +29,7 @@ public class SecurityConfig {
 	private LogoutSucess logoutSucess;
 	
 	@Autowired
-	private UserDetailSerivceImpl userDetailSerivceImpl;
+	private UserDetailServiceImpl userDetailServiceImpl;
 	
 	//정적자원들을 Security에서 제외
 	@Bean
@@ -103,11 +102,23 @@ public class SecurityConfig {
 					.rememberMeParameter("rememberme")
 					.tokenValiditySeconds(60)
 					.key("rememberkey")
-					.userDetailsService(userDetailSerivceImpl)
+					.userDetailsService(userDetailServiceImpl)
+					.authenticationSuccessHandler(loginSuccessHandler)
 					.useSecureCookie(false)
 					;
 			})
-			
+			.sessionManagement(sesstion ->{
+				sesstion
+					.invalidSessionUrl("/")
+					.maximumSessions(1)
+					.maxSessionsPreventsLogin(true)
+					;
+			})
+			.oauth2Login(t ->{
+				t.userInfoEndpoint((s)->{
+					s.userService(userDetailServiceImpl);
+				});
+			})
 			
 			;
 	

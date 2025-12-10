@@ -36,12 +36,18 @@ public class UserDTO implements UserDetails{
 	@Email(groups = {RegisterGroup.class, UpdateGroup.class})
 	@NotBlank(groups = {RegisterGroup.class})
 	private String email;
+	@Pattern(regexp = "^01(?:0|1|[6-9])-[0-9]{3,4}-[0-9]{4}$", groups = {RegisterGroup.class, UpdateGroup.class})
 	private String phone;
 	@Past(groups = {RegisterGroup.class, UpdateGroup.class})
 	private LocalDate birth;
 	private UserFileDTO userFileDTO;
 	
 	private List<RoleDTO> roleDTOs;
+	
+	private boolean accountNonExpired;
+	private boolean accountNonLocked;
+	private boolean credentialsNonExpired;
+	private boolean enabled;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,26 +61,7 @@ public class UserDTO implements UserDetails{
 		
 		return list;
 	}
-	@Override
-	public boolean isAccountNonExpired() {
-		
-		return true;
-	}
-	@Override
-	public boolean isAccountNonLocked() {
-		
-		return true;
-	}
-	@Override
-	public boolean isCredentialsNonExpired() {
-		
-		return true;
-	}
-	@Override
-	public boolean isEnabled() {
-		
-		return true;
-	}
+
 	
 	
 

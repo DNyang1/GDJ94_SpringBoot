@@ -15,9 +15,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import reactor.core.publisher.Mono;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/users/**")
@@ -29,10 +35,29 @@ public class UserController {
 	@Value("${category.user}")
 	private String category;
 
+	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	private String adminKey;
+	
 	@ModelAttribute("category")
 	private String getCategory() {
 		return this.category;
 	}
+	
+	@GetMapping("delete")
+	public String delete(Authentication authentication) throws Exception{
+		WebClient webClient = WebClient.create();
+		Mono<String> result = webClient.post()
+				.uri("https://kapi.kakao.com/v1/user/unlink")
+				.header("Authorization", "KakaoAK " + adminKey)
+				.header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+				.body(BodyInserters.fromFormData("target_id_type", "user_id").with("target_id",authentication.getName()))
+				.retrieve()
+				.bodyToMono(String.class)
+				;
+		System.out.println(result.block());
+		return "redirect:./logout";
+	}
+	
 	
 	@GetMapping("register")
 	public void register(UserDTO userDTO)throws Exception{}	
